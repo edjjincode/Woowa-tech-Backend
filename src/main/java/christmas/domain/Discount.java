@@ -8,4 +8,8 @@ public enum Discount {
     Discount(int value) {
         this.value = value;
     }
+
+    public int getValue() {
+        return value;
+    }
 }
