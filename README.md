@@ -91,7 +91,7 @@ Menu(enum)- 각 메뉴 이름 : 가격
 MenuGroupDiscount(enum)- 메뉴 : 메뉴의 그룹(에피타이저, 메인, 디저트, 음료)에 따른 discount를 한다
 Discount(enum)
 Calculator- 총 금액을 계산한다/ 할인율을 계산한다
-Order-주문한 내용들을 리스트 형식으로 저장한다
+User visitDate와 order를 모두 저장한다- order는 <menu, Integer> Map 형태에 저장한다
 
 * * *
 
@@ -153,16 +153,6 @@ class enum Menu {
         this.count = count;
     }
 }
-```
-
-```java
-class enum Discount {
-(boolean 평일, boolean 주말, boolean 별)
-
-FIRST(yes, no, no)
-SECOND(no, yes, no)
-THIRD(yes, no, yes)
-FOURTH(no, yes, yes)
 ```
 
 * * * 
