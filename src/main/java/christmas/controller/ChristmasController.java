@@ -1,4 +1,7 @@
 package christmas.controller;
+
+import christmas.view.SystemInput;
+
 public class ChristmasController {
     //날짜를 입력받는다
     //메뉴 및 수량을 입력받느다
@@ -10,4 +13,6 @@ public class ChristmasController {
     // 혜택 여부를 출력한다
     // 할인 후 예상 결제 금액 출력한다
     // 12월 달 예상 금액을 출력한다
+    int visitDate = SystemInput.readDate();
+
 }
