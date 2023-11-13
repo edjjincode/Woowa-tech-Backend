@@ -5,25 +5,30 @@ import java.util.Map;
 public class Calculator {
 
     public static void calculateDiscount(User user) {
-        int totalDiscount = 0;
+        int totalOrderAmount = calculateTotalOrderAmount(user);
+        if (checkRunGame(totalOrderAmount)) {
+            int totalDiscount = calculateAllDiscount(user);
+            setAll(totalDiscount, totalOrderAmount, user);
+        }
+    }
+
+    public static int calculateTotalOrderAmount(User user) {
         int totalOrderAmount = 0;
-        int champagneGiven = 0;
-
         Map<Menu, Integer> orderMap = user.getOrderMap();
-
         for (Map.Entry<Menu, Integer> entry : orderMap.entrySet()) {
             Menu menu = entry.getKey();
             int quantity = entry.getValue();
             totalOrderAmount += menu.getPrice() * quantity;
         }
+        return totalOrderAmount;
+    }
 
+    public static int calculateAllDiscount(User user) {
+        int totalDiscount = 0;
         totalDiscount += calculateChristmasDiscount(user.getVisitDate());
         totalDiscount += calculateWeekdayDiscount(user.getVisitDate(), user.getOrderMap());
         totalDiscount += calculateSpecialDiscount(user.getVisitDate());
-
-        user.setTotalDiscount(totalDiscount);
-        user.setTotalOrderAmount(totalOrderAmount);
-        user.setFinalPayment(totalOrderAmount - totalDiscount);
+        return totalDiscount;
     }
 
     public static int calculateChristmasDiscount(int visitDate) {
@@ -58,6 +63,12 @@ public class Calculator {
         return discount;
     }
 
+    public static void setAll(int totalDiscount, int totalOrderAmount, User user) {
+        user.setTotalDiscount(totalDiscount);
+        user.setTotalOrderAmount(totalOrderAmount);
+        user.setFinalPayment(totalOrderAmount - totalDiscount);
+    }
+
     private static boolean isDiscountApplicable(int visitDate, Menu menu) {
         boolean isWeekday = DateUtil.isWeekday(visitDate);
         boolean isWeekend = !isWeekday;
@@ -66,8 +77,7 @@ public class Calculator {
                 (isWeekend && MenuType.MAIN.getFoodList().contains(menu));
     }
 
-
-
-
-
+    private static boolean checkRunGame(int totalOrderAmount) {
+        return totalOrderAmount >= 10_000;
+    }
 }
