@@ -31,4 +31,23 @@ class CalculatorTest {
         int expected = Calculator.calculateWeekdayDiscount(visitDate, orderMap);
         assertEquals(expected, 2_023);
     }
+
+    @DisplayName("calculateSpecialDiscount 제대로 작동하는지 확인하기")
+    @Test
+    void checkCalculateSpecialDiscount() {
+        Map<Menu, Integer> orderMap = new HashMap<>();
+        orderMap.put(Menu.T_BONE_STEAK, 1);
+        orderMap.put(Menu.CAESAR_SALAD, 1);
+        int visitDate = 3;
+        int expected = Calculator.calculateSpecialDiscount(visitDate, orderMap);
+        assertEquals(expected, 2_000);
+    }
+    @Test
+    void checkCalculateSpecialDiscount1() {
+        int visitDate = 3;
+        boolean isSpecial = DateUtil.isSpecialEvent(visitDate);
+        System.out.println(isSpecial);
+    }
+
+
 }
