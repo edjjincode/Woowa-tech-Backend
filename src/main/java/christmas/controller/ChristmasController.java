@@ -1,5 +1,6 @@
 package christmas.controller;
 
+import christmas.domain.Calculator;
 import christmas.domain.User;
 import christmas.view.SystemInput;
 import christmas.domain.Menu;
@@ -27,6 +28,7 @@ public class ChristmasController {
             int quantity = Integer.parseInt(parts[1]);
             user.addToOrder(menu, quantity);
         }
+        Calculator.calculateDiscount(user);
     }
 
     public static Menu getMenuByName(String name) {
