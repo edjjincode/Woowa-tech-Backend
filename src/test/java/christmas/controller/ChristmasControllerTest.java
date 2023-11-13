@@ -1,5 +1,7 @@
 package christmas.controller;
 
+import christmas.domain.Calculator;
+import christmas.domain.Discount;
 import christmas.domain.Menu;
 import christmas.domain.User;
 import christmas.view.SystemInput;
@@ -32,6 +34,17 @@ class ChristmasControllerTest {
     void checkGetMenuByName() {
         Menu menu = ChristmasController.getMenuByName("양송이수프");
         assertEquals(Menu.MUSHROOM_SOUP, menu);
+    }
+
+    @Test
+    void checkChampagne() {
+        User user = new User();
+        user.setVisitDate(1);
+        user.addToOrder(Menu.T_BONE_STEAK, 3);
+        Calculator.calculateDiscount(user);
+        if (ChristmasController.calculateChampagne(user)) {
+            System.out.println("Y");
+        }
     }
 
 }

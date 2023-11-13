@@ -37,7 +37,7 @@ public class User {
     public int getTotalOrderAmount() {
         return totalOrderAmount;
     }
-    public int getTotalBenefit() {return totalBenefit};
+    public int getTotalBenefit() {return totalBenefit; }
 
     public Map<Menu, Integer> getOrderMap() {
         return orderMap;
@@ -56,6 +56,6 @@ public class User {
     public void setTotalOrderAmount(int totalOrderAmount) {
         this.totalOrderAmount = totalOrderAmount;
     }
-    public void setTotalBenefit(int totalBenefit) {this.totalBenefit = totalBenefit};
+    public void setTotalBenefit(int totalBenefit) {this.totalBenefit = totalBenefit;}
 
 }
