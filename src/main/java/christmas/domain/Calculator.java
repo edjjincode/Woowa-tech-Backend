@@ -18,6 +18,7 @@ public class Calculator {
 
         totalDiscount += calculateChristmasDiscount(user.getVisitDate());
         totalDiscount += calculateWeekdayDiscount(user.getVisitDate(), user.getOrderMap());
+        totalDiscount += calculateSpecialDiscount(user.getVisitDate(), user.getOrderMap());
     }
 
     public static int calculateChristmasDiscount(int visitDate) {
@@ -40,6 +41,19 @@ public class Calculator {
 
         }
 
+        return discount;
+    }
+
+    public static int calculateSpecialDiscount(int visitDate, Map<Menu, Integer> orderMap) {
+        boolean isSpecial = DateUtil.isSpecialEvent(visitDate);
+        int discount = 0;
+        for (Map.Entry<Menu, Integer> entry : orderMap.entrySet()) {
+            Menu menu = entry.getKey();
+            int quantity = entry.getValue();
+            if (isSpecial) {
+                discount += Discount.SPECIAL_DISCOUNT.getValue() * quantity;
+            }
+        }
         return discount;
     }
 
