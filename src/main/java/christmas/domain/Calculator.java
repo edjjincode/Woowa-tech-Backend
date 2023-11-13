@@ -7,6 +7,7 @@ public class Calculator {
     public static void calculateDiscount(User user) {
         int totalDiscount = 0;
         int totalOrderAmount = 0;
+        int champagneGiven = 0;
 
         Map<Menu, Integer> orderMap = user.getOrderMap();
 
@@ -18,7 +19,11 @@ public class Calculator {
 
         totalDiscount += calculateChristmasDiscount(user.getVisitDate());
         totalDiscount += calculateWeekdayDiscount(user.getVisitDate(), user.getOrderMap());
-        totalDiscount += calculateSpecialDiscount(user.getVisitDate(), user.getOrderMap());
+        totalDiscount += calculateSpecialDiscount(user.getVisitDate());
+
+        user.setTotalDiscount(totalDiscount);
+        user.setTotalOrderAmount(totalOrderAmount);
+        user.setFinalPayment(totalOrderAmount - totalDiscount);
     }
 
     public static int calculateChristmasDiscount(int visitDate) {
@@ -44,15 +49,11 @@ public class Calculator {
         return discount;
     }
 
-    public static int calculateSpecialDiscount(int visitDate, Map<Menu, Integer> orderMap) {
+    public static int calculateSpecialDiscount(int visitDate) {
         boolean isSpecial = DateUtil.isSpecialEvent(visitDate);
         int discount = 0;
-        for (Map.Entry<Menu, Integer> entry : orderMap.entrySet()) {
-            Menu menu = entry.getKey();
-            int quantity = entry.getValue();
-            if (isSpecial) {
-                discount += Discount.SPECIAL_DISCOUNT.getValue() * quantity;
-            }
+        if (isSpecial) {
+            discount += Discount.SPECIAL_DISCOUNT.getValue();
         }
         return discount;
     }
