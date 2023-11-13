@@ -72,6 +72,8 @@
  - 2. 날짜와 메뉴 입력값을 통해 할인율을 계산한다
      - 평일 할인(일요일~목요일): 평일에는 디저트 메뉴를 메뉴 1개당 2,023원 할인
        주말 할인(금요일, 토요일): 주말에는 메인 메뉴를 메뉴 1개당 2,023원 할인
+8. 증정 이벤트를 진행한다(할인 전 총주문 금액이 12만 원 이상일 때, 샴페인 1개 증정)
+9. 총 주문 금액이 10000원 일 때 이벤트가 적용될 수 있도록 한다
 
 5. 고객들한테 입력받은 입력값을 User class에 저장한다
 6. 고객들한테 입력받은 날짜 입력값을 바탕으로 날짜 별 할인율을 계산한다
@@ -91,12 +93,12 @@ Controler # ChristmasController
 Domain # Menu(Enum) #MenuGroup(Enum) #MenuContainer(EnumMap) #Calculator #Calender #Discount
 View # SystemOutput #SytemInput
 
-Calender(enum) - 날짜(평일), 주말, 별 여부
+DateUtil(enum) - 날짜(평일), 주말, 별 여부
 Menu(enum)- 각 메뉴 이름 : 가격
-MenuGroupDiscount(enum)- 메뉴 : 메뉴의 그룹(에피타이저, 메인, 디저트, 음료)에 따른 discount를 한다
+MenuType(enum)- 메뉴 : 메뉴의 그룹(에피타이저, 메인, 디저트, 음료)에 따른 discount를 한다
 Discount(enum)
 Calculator- 총 금액을 계산한다/ 할인율을 계산한다
-User visitDate와 order를 모두 저장한다- order는 <menu, Integer> Map 형태에 저장한다
+User- visitDate와 order를 모두 저장한다- order는 <menu, Integer> Map 형태에 저장한다
 
 * * *
 
