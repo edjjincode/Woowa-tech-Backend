@@ -1,6 +1,7 @@
 package christmas.controller;
 
 import christmas.domain.Calculator;
+import christmas.domain.Discount;
 import christmas.domain.User;
 import christmas.view.SystemInput;
 import christmas.domain.Menu;
@@ -29,16 +30,24 @@ public class ChristmasController {
             user.addToOrder(menu, quantity);
         }
         Calculator.calculateDiscount(user);
-    }
-
-    public static Menu getMenuByName(String name) {
-        for (Menu menu : Menu.values()) {
-            if (menu.getName().equalsIgnoreCase(name)) {
-                return menu;
-            }
+        if (calculateChampagne(user)) {
+            user.setTotalBenefit(user.getTotalDiscount() + Discount.CHAMPAGNE_DISCOUNT.getValue());
+        } else {
+            user.setTotalBenefit(user.getTotalDiscount());
         }
-        throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
     }
 
+        public static Menu getMenuByName (String name){
+            for (Menu menu : Menu.values()) {
+                if (menu.getName().equalsIgnoreCase(name)) {
+                    return menu;
+                }
+            }
+            throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        }
 
-}
+        public static boolean calculateChampagne (User user){
+            return user.getTotalDiscount() >= 12_000;
+        }
+    }
+
