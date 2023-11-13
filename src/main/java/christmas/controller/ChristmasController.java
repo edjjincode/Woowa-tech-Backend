@@ -1,10 +1,10 @@
 package christmas.controller;
 
-import christmas.domain.Calculator;
-import christmas.domain.Discount;
-import christmas.domain.User;
+import christmas.domain.*;
 import christmas.view.SystemInput;
-import christmas.domain.Menu;
+
+import java.util.Map;
+import java.util.Set;
 
 public class ChristmasController {
 
@@ -12,16 +12,12 @@ public class ChristmasController {
         int visitDate = SystemInput.readDate();
         User user = new User();
         String orderMenuPrice = SystemInput.readOrder();
-        if (checkRunGame(orderMenuPrice)) {
-            processOrderInput(orderMenuPrice, user);
-            Calculator.calculateDiscount(user);
-            if (calculateChampagne(user)) {
-                user.setTotalBenefit(user.getTotalDiscount() + Discount.CHAMPAGNE_DISCOUNT.getValue());
-            } else {
-                user.setTotalBenefit(user.getTotalDiscount());
-            }
+        processOrderInput(orderMenuPrice, user);
+        Calculator.calculateDiscount(user);
+        if (calculateChampagne(user)) {
+            user.setTotalBenefit(user.getTotalDiscount() + Discount.CHAMPAGNE_DISCOUNT.getValue());
         } else {
-            System.out.println("[ERROR] 주문 금액이 너무 낮습니다. 최소 주문 금액은 10,000원입니다.");
+            user.setTotalBenefit(user.getTotalDiscount());
         }
     }
     public static void processOrderInput(String orderMenuPrice, User user) {
@@ -32,6 +28,19 @@ public class ChristmasController {
             int quantity = Integer.parseInt(parts[1]);
             user.addToOrder(menu, quantity);
         }
+        Set<Menu> orderSet = user.getOrderMap().keySet();
+        if (checkOnlyDrink(orderSet) && orderSet.size() == 1) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public static boolean checkOnlyDrink(Set<Menu> keys) {
+        for (Menu key : keys) {
+            if (!MenuType.DRINK.getFoodList().contains(key)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static Menu getMenuByName(String name) {
@@ -47,8 +56,6 @@ public class ChristmasController {
         return user.getTotalDiscount() >= 12_000;
     }
 
-    private static boolean checkRunGame(String totalOrderAmount) {
-        return Integer.parseInt(totalOrderAmount) >= 10_000;
-    }
+
 }
 
