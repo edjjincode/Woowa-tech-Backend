@@ -16,4 +16,8 @@ public enum MenuType {
         this.menu = menu;
         this.foodList = foodList;
     }
+
+    public List<Menu> getFoodList() {
+        return foodList;
+    }
 }
