@@ -1,12 +1,11 @@
 package christmas.controller;
 
-import christmas.domain.Calculator;
-import christmas.domain.Discount;
-import christmas.domain.Menu;
-import christmas.domain.User;
+import christmas.domain.*;
 import christmas.view.SystemInput;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,6 +57,14 @@ class ChristmasControllerTest {
             System.out.println(parts[0]);
             System.out.println(parts[1]);
         }
+    }
+    @DisplayName("checkOnlyDrink메서드가 제대로 작동하는지 확인하기")
+    @Test
+    void checkTestOnlyDrink() {
+        User user = new User();
+        user.addToOrder(Menu.RED_WINE, 3);
+        Set<Menu> orderSet = user.getOrderMap().keySet();
+        assertEquals(ChristmasController.checkOnlyDrink(orderSet), true);
     }
 
 }
