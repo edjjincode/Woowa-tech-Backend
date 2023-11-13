@@ -9,7 +9,7 @@ public class DateUtil {
             calendar.set(Calendar.MONTH, Calendar.DECEMBER);
             calendar.set(Calendar.DAY_OF_MONTH, visitDate);
             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-            return dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY;
+            return dayOfWeek != Calendar.FRIDAY && dayOfWeek != Calendar.SATURDAY;
         } else {
             throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
         }
