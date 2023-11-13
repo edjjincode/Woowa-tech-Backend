@@ -36,6 +36,7 @@ class ChristmasControllerTest {
         assertEquals(Menu.MUSHROOM_SOUP, menu);
     }
 
+    @DisplayName("calculateChampagne이 제대로 작동하는 지 확인하기")
     @Test
     void checkChampagne() {
         User user = new User();
@@ -44,6 +45,18 @@ class ChristmasControllerTest {
         Calculator.calculateDiscount(user);
         if (ChristmasController.calculateChampagne(user)) {
             System.out.println("Y");
+        }
+    }
+
+    @DisplayName("processOrderInput 함수 제대로 작동하는지 확인하기")
+    @Test
+    void checkProcessOrderInput() {
+        String input = "T_BONE_STEAK-2,CHOCO_CAKE-1";
+        String[] items = input.split(",");
+        for (String item : items) {
+            String[] parts = item.split("-");
+            System.out.println(parts[0]);
+            System.out.println(parts[1]);
         }
     }
 
