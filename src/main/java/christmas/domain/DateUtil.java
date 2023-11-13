@@ -5,6 +5,8 @@ public class DateUtil {
     public static boolean isWeekday(int visitDate) {
         if (visitDate >= 1 && visitDate <= 30) {
             Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+            calendar.set(Calendar.MONTH, Calendar.DECEMBER);
             calendar.set(Calendar.DAY_OF_MONTH, visitDate);
             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
             return dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY;
