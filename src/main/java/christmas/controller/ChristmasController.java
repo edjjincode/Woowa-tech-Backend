@@ -21,16 +21,23 @@ public class ChristmasController {
         }
     }
     public static void processOrderInput(String orderMenuPrice, User user) {
+        putOrderQuantity(orderMenuPrice, user);
+        Set<Menu> orderSet = user.getOrderMap().keySet();
+        if (checkOnlyDrink(orderSet) && orderSet.size() == 1) {
+            throw new IllegalArgumentException();
+        }
+        if(calculateOrderTotal(user) >= 20) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public static void putOrderQuantity(String orderMenuPrice, User user) {
         String[] items = orderMenuPrice.split(",");
         for (String item : items) {
             String[] parts = item.split("-");
             Menu menu = getMenuByName(parts[0]);
             int quantity = Integer.parseInt(parts[1]);
             user.addToOrder(menu, quantity);
-        }
-        Set<Menu> orderSet = user.getOrderMap().keySet();
-        if (checkOnlyDrink(orderSet) && orderSet.size() == 1) {
-            throw new IllegalArgumentException();
         }
     }
 
@@ -41,6 +48,17 @@ public class ChristmasController {
             }
         }
         return true;
+    }
+
+    public static int calculateOrderTotal(User user) {
+        Map<Menu, Integer> orderMap = user.getOrderMap();
+        int total = 0;
+
+        for (int quantity : orderMap.values()) {
+            total += quantity;
+        }
+
+        return total;
     }
 
     public static Menu getMenuByName(String name) {

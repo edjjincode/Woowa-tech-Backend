@@ -14,14 +14,6 @@ class ChristmasControllerTest {
 
     @Test
     void checkOrderMenuPrice() {
-//        User user = new User();
-//        String orderMenuPrice = "해산물파스타-2";
-//        String[] items = orderMenuPrice.split(",");
-//        for (String item : items) {
-//            String[] parts = item.split("-");
-//            int quantity = Integer.parseInt(parts[1]);
-//            Menu menu = parts[0]
-//            user.addToOrder(parts[0], quantity);
         for (Menu menu : Menu.values()) {
             System.out.println(menu.getName());
         }
@@ -65,6 +57,14 @@ class ChristmasControllerTest {
         user.addToOrder(Menu.RED_WINE, 3);
         Set<Menu> orderSet = user.getOrderMap().keySet();
         assertEquals(ChristmasController.checkOnlyDrink(orderSet), true);
+    }
+
+    @DisplayName("calculateOrderTotal 메서드가 제대로 작동하는지 확인하기")
+    @Test
+    void checkCalculateOrderTotal() {
+        User user = new User();
+        user.addToOrder(Menu.MUSHROOM_SOUP, 21);
+        assertEquals(ChristmasController.calculateOrderTotal(user),21);
     }
 
 }
