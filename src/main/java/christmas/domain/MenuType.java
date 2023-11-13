@@ -1,10 +1,9 @@
 package christmas.domain;
 
-import christmas.domain.Menu;
 import java.util.Arrays;
 import java.util.List;
 
-public enum MenuGroupDiscount {
+public enum MenuType {
     APPETIZER("애피타이저", Arrays.asList(Menu.MUSHROOM_SOUP, Menu.TAPAS, Menu.CAESAR_SALAD)),
     MAIN("메인", Arrays.asList(Menu.T_BONE_STEAK, Menu.BBQ_RIB, Menu.SEAFOOD_PASTA, Menu.CHRISTMAS_PASTA)),
     DESSERT("디저트", Arrays.asList(Menu.CHOCO_CAKE, Menu.ICECREAM)),
@@ -13,7 +12,7 @@ public enum MenuGroupDiscount {
     private String menu;
     private List<Menu> foodList;
 
-    MenuGroupDiscount(String menu, List<Menu> foodList) {
+    MenuType(String menu, List<Menu> foodList) {
         this.menu = menu;
         this.foodList = foodList;
     }
