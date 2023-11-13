@@ -20,28 +20,35 @@ public class Calculator {
         totalDiscount += calculateWeekdayDiscount(user.getVisitDate(), user.getOrderMap());
     }
 
-    private static int calculateChristmasDiscount(int visitDate) {
+    public static int calculateChristmasDiscount(int visitDate) {
         if (visitDate >= 1 && visitDate <= 25) {
             return (visitDate - 1) * Discount.CHRISTMAS_DISCOUNT.getValue() + 1_000;
         }
         return 0;
     }
 
-    private static int calculateWeekdayDiscount(int visitDate, Map<Menu, Integer> orderMap) {
+    public static int calculateWeekdayDiscount(int visitDate, Map<Menu, Integer> orderMap) {
         int discount = 0;
 
         for (Map.Entry<Menu, Integer> entry : orderMap.entrySet()) {
             Menu menu = entry.getKey();
             int quantity = entry.getValue();
 
-            if (DateUtil.isWeekday(visitDate)&& MenuType.DESSERT.getFoodList().contains(menu)) {
-                discount += 2_023 * quantity;
-            } else if (DateUtil.isWeekend(visitDate) && MenuType.MAIN.getFoodList().contains(menu)) {
-                discount += 2_023 * quantity;
+            if (isDiscountApplicable(visitDate, menu)) {
+                discount += Discount.WEEKDAY_DISCOUNT.getValue() * quantity;
             }
+
         }
 
         return discount;
+    }
+
+    private static boolean isDiscountApplicable(int visitDate, Menu menu) {
+        boolean isWeekday = DateUtil.isWeekday(visitDate);
+        boolean isWeekend = !isWeekday;
+
+        return (isWeekday && MenuType.DESSERT.getFoodList().contains(menu)) ||
+                (isWeekend && MenuType.MAIN.getFoodList().contains(menu));
     }
 
 
