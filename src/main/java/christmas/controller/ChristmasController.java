@@ -1,25 +1,43 @@
 package christmas.controller;
 
 import christmas.domain.*;
+import christmas.validator.Validator;
 import christmas.view.SystemInput;
+import christmas.view.SystemOutput;
 
 import java.util.Map;
 import java.util.Set;
 
 public class ChristmasController {
 
-    public static void run() {
-        int visitDate = SystemInput.readDate();
-        User user = new User();
-        String orderMenuPrice = SystemInput.readOrder();
-        processOrderInput(orderMenuPrice, user);
-        Calculator.calculateDiscount(user);
-        if (calculateChampagne(user)) {
-            user.setTotalBenefit(user.getTotalDiscount() + Discount.CHAMPAGNE_DISCOUNT.getValue());
-        } else {
-            user.setTotalBenefit(user.getTotalDiscount());
+    public  void run() {
+        try {
+            start();
+        } catch(IllegalArgumentException e) {
+            Validator.printErrorMessage(e.getMessage());
         }
     }
+    public void start(){
+        System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
+
+        int visitDate = SystemInput.readDate();
+
+        String orderMenuPrice = SystemInput.readOrder();
+
+        User user = new User();
+        user.setVisitDate(visitDate);
+        SystemOutput.printDate(user);
+
+        processOrderInput(orderMenuPrice, user);
+        Calculator.calculateDiscount(user);
+        SystemOutput.printOrderDetails(user);
+        //        if (calculateChampagne(user)) {
+//            user.setTotalBenefit(user.getTotalDiscount() + Discount.CHAMPAGNE_DISCOUNT.getValue());
+//        } else {
+//            user.setTotalBenefit(user.getTotalDiscount());
+//        }
+    }
+
     public static void processOrderInput(String orderMenuPrice, User user) {
         putOrderQuantity(orderMenuPrice, user);
         Set<Menu> orderSet = user.getOrderMap().keySet();
