@@ -7,6 +7,8 @@ import christmas.view.SystemOutput;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChristmasController {
 
@@ -31,11 +33,7 @@ public class ChristmasController {
         processOrderInput(orderMenuPrice, user);
         Calculator.calculateDiscount(user);
         SystemOutput.printOrderDetails(user);
-        //        if (calculateChampagne(user)) {
-//            user.setTotalBenefit(user.getTotalDiscount() + Discount.CHAMPAGNE_DISCOUNT.getValue());
-//        } else {
-//            user.setTotalBenefit(user.getTotalDiscount());
-//        }
+
     }
 
     public static void processOrderInput(String orderMenuPrice, User user) {
@@ -52,10 +50,29 @@ public class ChristmasController {
     public static void putOrderQuantity(String orderMenuPrice, User user) {
         String[] items = orderMenuPrice.split(",");
         for (String item : items) {
+            try {
+                validateOrderFormat(item);
+            } catch (IllegalArgumentException e){
+                Validator.printErrorMessage(e.getMessage());
+                SystemInput.readOrder();
+            }
             String[] parts = item.split("-");
-            Menu menu = getMenuByName(parts[0]);
-            int quantity = Integer.parseInt(parts[1]);
-            user.addToOrder(menu, quantity);
+            try {
+                Menu menu = getMenuByName(parts[0]);
+                int quantity = Integer.parseInt(parts[1]);
+                user.addToOrder(menu, quantity);
+            } catch (IllegalArgumentException e) {
+                Validator.printErrorMessage(e.getMessage());
+                SystemInput.readOrder();
+            }
+        }
+    }
+    public static void validateOrderFormat(String menuPrice) {
+        String regex = "([가-힣]+)-(\\d+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(menuPrice);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
         }
     }
 
@@ -85,7 +102,7 @@ public class ChristmasController {
                 return menu;
             }
         }
-        throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
     }
 
     public static boolean calculateChampagne(User user) {
