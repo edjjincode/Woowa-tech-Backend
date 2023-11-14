@@ -2,8 +2,7 @@ package christmas.controller;
 
 import christmas.domain.*;
 import christmas.validator.Validator;
-import christmas.view.SystemInput;
-import christmas.view.SystemOutput;
+import christmas.view.*;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -23,9 +22,8 @@ public class ChristmasController {
         User user = new User();
         getDate(user);
         getOrder(user);
-        SystemOutput.printDate(user);
         Calculator.calculateDiscount(user);
-        SystemOutput.printOrderDetails(user);
+        printProgram(user);
     }
 
     public static void getDate(User user) {
@@ -36,6 +34,14 @@ public class ChristmasController {
     public static void getOrder(User user) {
         String orderMenuPrice = SystemInput.readOrder();
         processOrderInput(orderMenuPrice, user);
+    }
+
+    public static void printProgram(User user) {
+        SystemDateOutput.printDate(user);
+        SystemQuantityOutput.printQuantity(user);
+        SystemQuantityOutput.printTotalQuantity(user);
+        SystemQuantityOutput.printBenefit(user);
+        SystemBadgeOutput.printBadge(user);
     }
 
     public static void processOrderInput(String orderMenuPrice, User user) {
@@ -114,9 +120,7 @@ public class ChristmasController {
         throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
     }
 
-    public static boolean calculateChampagne(User user) {
-        return user.getTotalDiscount() >= 12_000;
-    }
+
 
 
 }
