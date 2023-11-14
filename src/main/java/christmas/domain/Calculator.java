@@ -48,9 +48,7 @@ public class Calculator {
             if (isDiscountApplicable(visitDate, menu)) {
                 discount += Discount.WEEKDAY_DISCOUNT.getValue() * quantity;
             }
-
         }
-
         return discount;
     }
 
@@ -67,6 +65,10 @@ public class Calculator {
         user.setTotalDiscount(totalDiscount);
         user.setTotalOrderAmount(totalOrderAmount);
         user.setFinalPayment(totalOrderAmount - totalDiscount);
+        if (!calculateChampagne(user)) {
+            user.setTotalBenefit(totalDiscount);
+        }
+        user.setTotalBenefit(totalDiscount + Discount.CHAMPAGNE_DISCOUNT.getValue());
     }
 
     private static boolean isDiscountApplicable(int visitDate, Menu menu) {
@@ -79,5 +81,8 @@ public class Calculator {
 
     private static boolean checkRunGame(int totalOrderAmount) {
         return totalOrderAmount >= 10_000;
+    }
+    public static boolean calculateChampagne(User user) {
+        return user.getTotalOrderAmount() >= 120_000;
     }
 }
