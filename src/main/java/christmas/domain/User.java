@@ -17,12 +17,15 @@ public class User {
 
 
     public void addToOrder(Menu menu, int quantity) {
-        if (Menu.isValidMenu(menu) && quantity > 0) {
-            orderMap.put(menu, quantity);
-        }
-        else {
+        if (!Menu.isValidMenu(menu)) {
             throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
         }
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("수량은 양수이어야 합니다. 다시 입력해 주세요.");
+        }
+
+        orderMap.put(menu, quantity);
     }
     public int getTotalDiscount() {
         return totalDiscount;
