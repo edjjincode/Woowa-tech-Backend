@@ -49,6 +49,7 @@ public class ChristmasController {
         SystemDateOutput.printDate(user);
         SystemQuantityOutput.printQuantity(user);
         SystemQuantityOutput.printTotalQuantity(user);
+        SystemQuantityOutput.printGift(user);
         SystemQuantityOutput.printBenefit(user);
         SystemBadgeOutput.printBadge(user);
     }
