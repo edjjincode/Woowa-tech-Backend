@@ -1,5 +1,8 @@
 package christmas.domain;
 
+import christmas.controller.ChristmasController;
+import christmas.validator.Validator;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +20,8 @@ public class User {
 
 
     public void addToOrder(Menu menu, int quantity) {
-        if (!Menu.isValidMenu(menu)) {
-            throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
-        }
-
-        if (quantity <= 0) {
-            throw new IllegalArgumentException("수량은 양수이어야 합니다. 다시 입력해 주세요.");
+        if (!Menu.isValidMenu(menu) || quantity <= 0) {
+            throw new IllegalArgumentException();
         }
 
         orderMap.put(menu, quantity);
@@ -44,6 +43,9 @@ public class User {
 
     public Map<Menu, Integer> getOrderMap() {
         return orderMap;
+    }
+    public void clearOrder() {
+        orderMap.clear();
     }
     public void setVisitDate(int visitDate) {
         this.visitDate = visitDate;
