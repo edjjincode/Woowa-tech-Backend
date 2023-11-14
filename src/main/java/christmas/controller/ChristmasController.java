@@ -5,8 +5,7 @@ import christmas.validator.Validator;
 import christmas.view.SystemInput;
 import christmas.view.SystemOutput;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,25 +47,53 @@ public class ChristmasController {
     }
 
     public static void putOrderQuantity(String orderMenuPrice, User user) {
+        List<Menu> menuOrderList = new ArrayList<>();
         String[] items = orderMenuPrice.split(",");
-        for (String item : items) {
-            try {
+        try {
+            for (String item : items) {
                 validateOrderFormat(item);
-            } catch (IllegalArgumentException e){
-                Validator.printErrorMessage(e.getMessage());
-                SystemInput.readOrder();
-            }
-            String[] parts = item.split("-");
-            try {
+                String[] parts = item.split("-");
                 Menu menu = getMenuByName(parts[0]);
+                menuOrderList.add(menu);
+                validateDuplicate(menuOrderList);
                 int quantity = Integer.parseInt(parts[1]);
                 user.addToOrder(menu, quantity);
-            } catch (IllegalArgumentException e) {
-                Validator.printErrorMessage(e.getMessage());
-                SystemInput.readOrder();
             }
         }
+        catch (IllegalArgumentException e) {
+            Validator.printErrorMessage(e.getMessage());
+            SystemInput.readOrder();
+        }
     }
+
+    public static void validateDuplicate(List<Menu> menuList) {
+        HashSet setMenu = new HashSet(menuList);
+        if (setMenu.size() != menuList.size()) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+
+    //public static void putOrderQuantity(String orderMenuPrice, User user) {
+    //        String[] items = orderMenuPrice.split(",");
+    //        for (String item : items) {
+    //            try {
+    //                validateOrderFormat(item);
+    //            } catch (IllegalArgumentException e){
+    //                Validator.printErrorMessage(e.getMessage());
+    //                SystemInput.readOrder();
+    //            }
+    //            String[] parts = item.split("-");
+    //            try {
+    //                Menu menu = getMenuByName(parts[0]);
+    //                int quantity = Integer.parseInt(parts[1]);
+    //                user.addToOrder(menu, quantity);
+    //            } catch (IllegalArgumentException e) {
+    //                Validator.printErrorMessage(e.getMessage());
+    //                SystemInput.readOrder();
+    //            }
+    //        }
+    //    }
     public static void validateOrderFormat(String menuPrice) {
         String regex = "([가-힣]+)-(\\d+)";
         Pattern pattern = Pattern.compile(regex);
