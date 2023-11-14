@@ -7,24 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SystemInput {
-    public static Integer readDate() {
+    public static String readDate() {
         System.out.println("12월 중 식당 예상 방문 날짜는 언제인가요? (1~30): ");
         String date = Console.readLine();
-        int visitDate = Integer.parseInt(date);
-        try {
-            validateDate(visitDate);
-        }
-        catch (IllegalArgumentException e) {
-            Validator.printErrorMessage(e.getMessage());
-            readDate();
-        }
-        return visitDate;
-    }
-
-    public static void validateDate(int visitDate){
-        if (visitDate < 1 && visitDate > 31) {
-            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
-        }
+        return date;
     }
 
     public static String readOrder() {

@@ -27,8 +27,17 @@ public class ChristmasController {
     }
 
     public static void getDate(User user) {
-        int visitDate = SystemInput.readDate();
-        user.setVisitDate(visitDate);
+        try {
+            String date = SystemInput.readDate();
+            validateNumDate(date);
+            int visitDate = Integer.parseInt(date);
+            validateDate(visitDate);
+            user.setVisitDate(visitDate);
+        } catch (IllegalArgumentException e) {
+            Validator.printErrorMessage("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+            getDate(user);
+        }
+
     }
 
     public static void getOrder(User user) {
@@ -48,7 +57,7 @@ public class ChristmasController {
         putOrderQuantity(orderMenuPrice, user);
         Set<Menu> orderSet = user.getOrderMap().keySet();
         if ((checkOnlyDrink(orderSet) && orderSet.size() == 1) || calculateOrderTotal(user) >= 20) {
-            Validator.printErrorMessage("유효하지 않은 주문입니다. 다시 입력해주세요.");
+            Validator.printErrorMessage("유효하지 않은 주문입니다. 다시 입력해 주세요.");
             user.clearOrder();
             getOrder(user);
         }
@@ -68,11 +77,25 @@ public class ChristmasController {
             }
             validateDuplicate(menuOrderList);
         } catch (IllegalArgumentException e) {
-            Validator.printErrorMessage("유효하지 않은 주문입니다. 다시 입력해주세요.");
+            Validator.printErrorMessage("유효하지 않은 주문입니다. 다시 입력해 주세요.");
             user.clearOrder();
             getOrder(user);
         }
 
+    }
+
+    public static void validateDate(int visitDate){
+        if (visitDate < 1 && visitDate > 31) {
+            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+        }
+    }
+
+    public static void validateNumDate(String date) {
+        Pattern pattern = Pattern.compile("\\D");
+        Matcher matcher = pattern.matcher(date);
+        if (matcher.find()){
+            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+        }
     }
 
     public static void validateDuplicate(List<Menu> menuList) {
