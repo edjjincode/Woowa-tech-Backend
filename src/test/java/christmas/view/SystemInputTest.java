@@ -17,10 +17,10 @@ class SystemInputTest {
         System.setIn(new ByteArrayInputStream(inputData.getBytes()));
 
         // Act
-        Integer result = SystemInput.readDate();
+        String result = SystemInput.readDate();
 
         // Assert
-        assertThat(result).isEqualTo(15);
+        assertThat(Integer.parseInt(result)).isEqualTo(15);
 
     }
 }
