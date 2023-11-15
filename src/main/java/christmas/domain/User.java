@@ -31,10 +31,6 @@ public class User {
         payment.setTotalBenefit(totalDiscount + Discount.CHAMPAGNE_DISCOUNT.getValue());
     }
 
-    public static boolean calculateChampagne(Payment payment) {
-        return payment.getTotalOrderAmount() >= 120_000;
-    }
-
     public int getVisitDate() {
         return visitDate;
     }
