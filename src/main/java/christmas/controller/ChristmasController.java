@@ -12,6 +12,16 @@ public class ChristmasController {
 
     private final User user;
 
+    private static final String WRONG_DATE = "유효하지 않은 날짜입니다. 다시 입력해 주세요.";
+    private static final String WRONG_INPUT = "유효하지 않은 주문입니다. 다시 입력해 주세요.";
+    private static final String STRING_SEPERATOR = ",";
+    private static final String STRING_MIDDLE_SEPERATOR = "-";
+    private static final String NUM_VALIDATE = "\\D";
+    private static final String INPUT_PATTERN = "([가-힣]+)-(\\d+)";
+    private static final int MAX_NUM = 20;
+
+
+
     public ChristmasController(User user) {
         this.user = user;
     }
@@ -40,7 +50,7 @@ public class ChristmasController {
             validateDate(visitDate);
             user.setVisitDate(visitDate);
         } catch (IllegalArgumentException e) {
-            Validator.printErrorMessage("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+            Validator.printErrorMessage(WRONG_DATE);
             getDate();
         }
     }
@@ -67,22 +77,22 @@ public class ChristmasController {
     }
 
     public static void validateNumDate(String date) {
-        Pattern pattern = Pattern.compile("\\D");
+        Pattern pattern = Pattern.compile(NUM_VALIDATE);
         Matcher matcher = pattern.matcher(date);
         if (matcher.find()){
-            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(WRONG_DATE);
         }
     }
 
     public static void validateDate(int visitDate){
         if (visitDate < 1 && visitDate > 31) {
-            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+            throw new IllegalArgumentException(WRONG_DATE);
         }
     }
 
     private void processOrderInput(String orderMenuPrice) {
         List<Menu> menuOrderList = new ArrayList<>();
-        String[] items = orderMenuPrice.split(",");
+        String[] items = orderMenuPrice.split(STRING_SEPERATOR);
         try {
             for (String item : items) {
                 addMenuQuantity(item, menuOrderList);
@@ -90,14 +100,14 @@ public class ChristmasController {
             validateDuplicate(menuOrderList);
             putOrderToUser(menuOrderList);
         } catch (IllegalArgumentException e) {
-            Validator.printErrorMessage("유효하지 않은 주문입니다. 다시 입력해 주세요.");
+            Validator.printErrorMessage(WRONG_INPUT);
             getOrder();
         }
     }
 
     private void addMenuQuantity(String item, List<Menu> menuOrderList) {
         validateOrderFormat(item);
-        String[] parts = item.split("-");
+        String[] parts = item.split(STRING_MIDDLE_SEPERATOR);
         Menu menu = getMenuByName(parts[0]);
         menuOrderList.add(menu);
         int quantity = Integer.parseInt(parts[1]);
@@ -106,8 +116,8 @@ public class ChristmasController {
 
     private void putOrderToUser(List<Menu> menuOrderList) {
         Set<Menu> orderSet = new HashSet<>(menuOrderList);
-        if ((checkOnlyDrink(orderSet) && orderSet.size() == 1) || calculateOrderTotal() >= 20) {
-            throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        if ((checkOnlyDrink(orderSet) && orderSet.size() == 1) || calculateOrderTotal() >= MAX_NUM) {
+            throw new IllegalArgumentException(WRONG_INPUT);
         }
     }
 
@@ -135,7 +145,7 @@ public class ChristmasController {
                 return menu;
             }
         }
-        throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        throw new IllegalArgumentException(WRONG_INPUT);
     }
 
     public static void validateDuplicate(List<Menu> menuList) {
@@ -146,7 +156,7 @@ public class ChristmasController {
     }
 
     public static void validateOrderFormat(String menuPrice) {
-        String regex = "([가-힣]+)-(\\d+)";
+        String regex = INPUT_PATTERN;
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(menuPrice);
         if (!matcher.matches()) {

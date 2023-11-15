@@ -4,6 +4,10 @@ import java.util.Map;
 
 public class Calculator {
 
+    private static final int THOUSANDS = 1_000;
+    private static final int CHAMPAGNE_START = 120_000;
+    private static final int LEAST_EVENT_START = 10_000;
+
     public static void calculateDiscount(User user) {
         int visitDate = user.getVisitDate();
         Map<Menu, Integer> orderMap = user.getOrderMap();
@@ -36,7 +40,7 @@ public class Calculator {
 
     public static int calculateChristmasDiscount(int visitDate) {
         if (visitDate >= 1 && visitDate <= 25) {
-            return (visitDate - 1) * Discount.CHRISTMAS_DISCOUNT.getValue() + 1_000;
+            return (visitDate - 1) * Discount.CHRISTMAS_DISCOUNT.getValue() + THOUSANDS;
         }
         return 0;
     }
@@ -71,10 +75,10 @@ public class Calculator {
     }
 
     public static boolean calculateChampagne(Payment payment) {
-        return payment.getTotalOrderAmount() >= 120_000;
+        return payment.getTotalOrderAmount() >= CHAMPAGNE_START;
     }
 
     private static boolean checkRunGame(int totalOrderAmount) {
-        return totalOrderAmount >= 10_000;
+        return totalOrderAmount >= LEAST_EVENT_START;
     }
 }
