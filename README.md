@@ -92,18 +92,10 @@
   - 사용자가 잘못된 값을 입력할 경우 IllegalArgumentException를 발생시키고, "[ERROR]"로 시작하는 에러 메시지를 출력 후 그 부분부터 입력을 다시 받는다.
 14. SystemOutput 클래스로 분리한다
 15. 샴페인 문제를 해결한다
-16. 증명 배지 문제를 해결한다
+16. 배지 문제를 해결한다
+17. 함수(메서드) 라인에 대한 기준을 지키는 지 확인한다
+18. **객체는 객체스럽게 사용한다**
 
-5. 고객들한테 입력받은 입력값을 User class에 저장한다
-6. 고객들한테 입력받은 날짜 입력값을 바탕으로 날짜 별 할인율을 계산한다
-7. 평일이나 주말인지 여부를 나눌 수 있는 enum 클래스를 작성한다
-
-4. 평일가 주말을 나눌 수 있는 enum 클래스를 작성한다
-5. 고객들한테 주문할 메뉴와 개수를 입력받는 코드를 작성한다
-6. 메뉴 enum클래스를 작성한다
-7. 메뉴그룹 enum클래스를 작성한다
-8. 할인율 enum 클래스를 작성한다
-9.
 * * * 
 
 ## 사용될 객체
@@ -119,106 +111,7 @@ Discount(enum)
 Calculator- 총 금액을 계산한다/ 할인율을 계산한다
 User- visitDate와 order를 모두 저장한다- order는 <menu, Integer> Map 형태에 저장한다
 
-* * *
-
-```java
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-class enum Calender {
-    WEEKDAY, WEEKEND;
-}
-
-public class DateExam {
-    public static void main(String[] args) {
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        
-        DateType dateType;
-        if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-            dayType = DateType.WEEKEND;
-        }
-        else {
-            dateType = DateType.WEEKDAY;
-        }
-    }
-}
-```
-
-```java
-class enum MenuGroupDiscount {
-    APPETIZER("애피타이저", Arrays.asList("..")),
-    MAIN("메인", Arrays.asList("..")),
-    DESSERT("디저트", Arrays.asList("...")),
-    DRINK("음료", Arrays.asList("..."));
-
-    MenuGroupDiscount(String title, Lis<String> foodList);}
-```
-
-```java
-class enum Menu {
-    MUSHROOM_SOUP("양송이수프", 6_000),
-    TAPAS("타파스", 5_500),
-    CAESAR_SALAD("시저샐러드", 8_000),
-    T_BONE_STEAK("티본스테이크", 55_000),
-    BBQ_RIB("바비큐립", 54_000),
-    SEAFOOD_PASTA("해산물파스타", 35_000),
-    CHRISTMAS_PASTA("크리스파스타", 25_000),
-    CHOCO_CAKE("초코케이크", 15_000),
-    ICECREAM("아이스크림", 5_000),
-    ZERO_COKE("제로콜라", 3_000),
-    RED_WINE("레드와인", 60_000),
-    CHAMPAGNE("샴페인", 25_000);
-
-    private String title;
-    private Integer count;
-
-    Menu(String title, Integer count) {
-        this.title = title;
-        this.count = count;
-    }
-}
-```
-
 * * * 
-
-
-## 문제에서 주어진 기능 목록
-
-- 고객들이 식당에 방문할 날짜와 메뉴를 미리 선택하면 이벤트 플래너가 주문 메뉴, 할인 전 총주문 금액, 증정 메뉴, 혜택 내역, 총혜택 금액, 할인 후 예상 결제 금액, 12월 이벤트 배지 내용을 보여주기를 기대합니다.
-- 12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)
-    - 방문할 날짜는 1 이상 31 이하의 숫자로만 입력받아 주세요.
-    - 1 이상 31 이하의 숫자가 아닌 경우, "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요."라는 에러 메시지를 보여 주세요.
-    - 모든 에러 메시지는 "[ERROR]"로 시작하도록 작성해 주세요.
-- 주문하실 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)
-    - 고객이 메뉴판에 없는 메뉴를 입력하는 경우, "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."라는 에러 메시지를 보여 주세요.
-    - 메뉴의 개수는 1 이상의 숫자만 입력되도록 해주세요. 이외의 입력값은 "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."라는 에러 메시지를 보여 주세요.
-    - 메뉴 형식이 예시와 다른 경우, "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."라는 에러 메시지를 보여 주세요.
-    - 중복 메뉴를 입력한 경우(e.g. 시저샐러드-1,시저샐러드-1), "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요."라는 에러 메시지를 보여 주세요.
-    - 모든 에러 메시지는 "[ERROR]"로 시작하도록 작성해 주세요.
-- 주문 메뉴의 출력 순서는 자유롭게 출력해 주세요.
-- 총혜택 금액에 따라 이벤트 배지의 이름을 다르게 보여 주세요.
-- 총혜택 금액 = 할인 금액의 합계 + 증정 메뉴의 가격
-- 할인 후 예상 결제 금액 = 할인 전 총주문 금액 - 할인 금액
-- 증정 메뉴
-    - 증정 이벤트에 해당하지 않는 경우, 증정 메뉴 "없음"으로 보여 주세요.
-- 혜택 내역
-    - 고객에게 적용된 이벤트 내역만 보여 주세요.
-    - 적용된 이벤트가 하나도 없다면 혜택 내역 "없음"으로 보여 주세요.
-    - 혜택 내역에 여러 개의 이벤트가 적용된 경우, 출력 순서는 자유롭게 출력해주세요.
-- 이벤트 배지
-    - 이벤트 배지가 부여되지 않는 경우, "없음"으로 보여 주세요.
-- 적용된 이벤트가 하나도 없는 경우는 아래 예시를 참고해 주세요.
-
-## 📮 미션 제출 방법
-
-- 미션 구현을 완료한 후 GitHub을 통해 제출해야 한다.
-    - GitHub을 활용한 제출 방법은 [프리코스 과제 제출](https://docs.google.com/document/d/1cmg0VpPkuvdaetxwp4hnyyFC_G-1f2Gr8nIDYIWcKC8/edit?usp=sharing) 문서를 참고해
-      제출한다.
-- GitHub에 미션을 제출한 후 [우아한테크코스 지원](https://apply.techcourse.co.kr) 사이트에 접속하여 프리코스 과제를 제출한다.
-    - 자세한 방법은 [제출 가이드](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse#제출-가이드) 참고
-    - **지원 플랫폼을 통해 과제를 제출하지 않으면 최종 제출되지 않은 것으로 처리되므로 주의한다.**
 
 ## 🚨 과제 제출 전 체크 리스트 - 0점 방지
 
@@ -226,18 +119,22 @@ class enum Menu {
 - 기능 구현을 완료한 뒤 아래 가이드에 따라 테스트를 실행했을 때 모든 테스트가 성공하는지 확인한다.
 - **테스트가 실패할 경우 0점으로 처리**되므로, 반드시 확인 후 제출한다.
 
-### 테스트 실행 가이드
-
-- 터미널에서 `java -version`을 실행하여 Java 버전이 17인지 확인한다.
-  Eclipse 또는 IntelliJ IDEA와 같은 IDE에서 Java 17로 실행되는지 확인한다.
-- 터미널에서 Mac 또는 Linux 사용자의 경우 `./gradlew clean test` 명령을 실행하고,
-  Windows 사용자의 경우 `gradlew.bat clean test` 또는 `./gradlew.bat clean test` 명령을 실행할 때 모든 테스트가 아래와 같이 통과하는지 확인한다.
-
-```
-BUILD SUCCESSFUL in 0s
-```
-
 ---
+
+## 이번 주 공통 피드백
+
+1. 함수(메서드) 라인에 대한 기준
+  - 프로그래밍 요구사항을 보면 함수 15라인으로 제한하는 요구사항이 있다. 이 기준은 main() 함수에도 해당된다. 공백 라인도 한 라인에 해당한다. 15라인이 넘어간다면 함수 분리를 위한 고민을 한다.
+2. 발생할 수 있는 예외 상황에 대해 고민한다
+3. 비즈니스 로직과 UI 로직을 분리한다
+4. 연관성이 있는 상수는 static final 대신 enum을 활용한다
+5. final 키워드를 사용해 값의 변경을 막는다
+6. 객체의 상태 접근을 제한한다
+- 인스턴스 변수의 접근 제어자는 private으로 구현한다.
+7. **객체는 객체스럽게 사용한다**
+8. 필드(인스턴스 변수)의 수를 줄이기 위해 노력한다
+9. 성공하는 케이스 뿐만 아니라 예외에 대한 케이스도 테스트한다
+10. 테스트 코드도 코드다
 
 ## 🚀 기능 요구 사항
 
