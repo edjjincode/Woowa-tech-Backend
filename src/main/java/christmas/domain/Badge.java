@@ -12,7 +12,7 @@ public enum Badge {
         this.threshold = threshold;
     }
 
-     public static String getBadgeByTotalDiscount(int totalBenefit) {
+    public static String getBadgeByTotalDiscount(int totalBenefit) {
         for (Badge badge : Badge.values()) {
             if (totalBenefit >= badge.threshold) {
                 return badge.name();
@@ -21,3 +21,4 @@ public enum Badge {
         return 없음.name();
     }
 }
+

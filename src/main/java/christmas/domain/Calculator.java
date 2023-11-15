@@ -4,15 +4,19 @@ import java.util.Map;
 
 public class Calculator {
 
-    public static void calculateDiscount(int visitDate, Map<Menu, Integer> orderMap, Payment payment) {
+    public static void calculateDiscount(User user) {
+        int visitDate = user.getVisitDate();
+        Map<Menu, Integer> orderMap = user.getOrderMap();
+
         int totalOrderAmount = calculateTotalOrderAmount(orderMap);
+
         if (checkRunGame(totalOrderAmount)) {
             int totalDiscount = calculateAllDiscount(visitDate, orderMap);
-            setAll(totalDiscount, totalOrderAmount, payment);
+            user.updatePayment(totalDiscount, totalOrderAmount);
         }
     }
 
-    public static int calculateTotalOrderAmount(Map<Menu, Integer> orderMap) {
+    private static int calculateTotalOrderAmount(Map<Menu, Integer> orderMap) {
         int totalOrderAmount = 0;
         for (Map.Entry<Menu, Integer> entry : orderMap.entrySet()) {
             Menu menu = entry.getKey();
@@ -22,7 +26,7 @@ public class Calculator {
         return totalOrderAmount;
     }
 
-    public static int calculateAllDiscount(int visitDate, Map<Menu, Integer> orderMap) {
+    private static int calculateAllDiscount(int visitDate, Map<Menu, Integer> orderMap) {
         int totalDiscount = 0;
         totalDiscount += calculateChristmasDiscount(visitDate);
         totalDiscount += calculateWeekdayDiscount(visitDate, orderMap);
@@ -58,16 +62,6 @@ public class Calculator {
         return discount;
     }
 
-    public static void setAll(int totalDiscount, int totalOrderAmount, Payment payment) {
-        payment.setTotalDiscount(totalDiscount);
-        payment.setTotalOrderAmount(totalOrderAmount);
-        payment.setFinalPayment(totalOrderAmount - totalDiscount);
-        if (!calculateChampagne(payment)) {
-            payment.setTotalBenefit(totalDiscount);
-        }
-        payment.setTotalBenefit(totalDiscount + Discount.CHAMPAGNE_DISCOUNT.getValue());
-    }
-
     private static boolean isDiscountApplicable(int visitDate, Menu menu) {
         boolean isWeekday = DateUtil.isWeekday(visitDate);
         boolean isWeekend = !isWeekday;
@@ -76,10 +70,11 @@ public class Calculator {
                 (isWeekend && MenuType.MAIN.getFoodList().contains(menu));
     }
 
-    private static boolean checkRunGame(int totalOrderAmount) {
-        return totalOrderAmount >= 10_000;
-    }
     public static boolean calculateChampagne(Payment payment) {
         return payment.getTotalOrderAmount() >= 120_000;
+    }
+
+    private static boolean checkRunGame(int totalOrderAmount) {
+        return totalOrderAmount >= 10_000;
     }
 }

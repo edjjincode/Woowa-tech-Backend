@@ -39,3 +39,4 @@ public class Payment {
     public void setTotalBenefit(int totalBenefit) {this.totalBenefit = totalBenefit;}
 }
 
+

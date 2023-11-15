@@ -19,15 +19,16 @@ public class ChristmasController {
     public void run() {
         try {
             start();
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Validator.printErrorMessage(e.getMessage());
         }
     }
 
-    public void start(){
+    public void start() {
         SystemPrintGreeting.printGreeting();
         getDate();
         getOrder();
+        Calculator.calculateDiscount(user);
         implementGame();
     }
 
@@ -52,8 +53,7 @@ public class ChristmasController {
     private void implementGame() {
         int visitDate = user.getVisitDate();
         Map<Menu, Integer> orderMap = user.getOrderMap();
-        Payment payment = new Payment();
-        Calculator.calculateDiscount(visitDate, orderMap, payment);
+        Payment payment = user.getPayment();
         printProgram(visitDate, orderMap, payment);
     }
 
@@ -64,6 +64,20 @@ public class ChristmasController {
         SystemQuantityOutput.printGift(payment);
         SystemQuantityOutput.printBenefit(visitDate, orderMap, payment);
         SystemBadgeOutput.printBadge(payment);
+    }
+
+    public static void validateNumDate(String date) {
+        Pattern pattern = Pattern.compile("\\D");
+        Matcher matcher = pattern.matcher(date);
+        if (matcher.find()){
+            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+        }
+    }
+
+    public static void validateDate(int visitDate){
+        if (visitDate < 1 && visitDate > 31) {
+            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+        }
     }
 
     private void processOrderInput(String orderMenuPrice) {
@@ -106,36 +120,6 @@ public class ChristmasController {
         return total;
     }
 
-    public static void validateDate(int visitDate){
-        if (visitDate < 1 && visitDate > 31) {
-            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
-        }
-    }
-
-    public static void validateNumDate(String date) {
-        Pattern pattern = Pattern.compile("\\D");
-        Matcher matcher = pattern.matcher(date);
-        if (matcher.find()){
-            throw new IllegalArgumentException("유효하지 않은 날짜입니다. 다시 입력해 주세요.");
-        }
-    }
-
-    public static void validateDuplicate(List<Menu> menuList) {
-        HashSet setMenu = new HashSet(menuList);
-        if (setMenu.size() != menuList.size()) {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    public static void validateOrderFormat(String menuPrice) {
-        String regex = "([가-힣]+)-(\\d+)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(menuPrice);
-        if (!matcher.matches()) {
-            throw new IllegalArgumentException();
-        }
-    }
-
     public static boolean checkOnlyDrink(Set<Menu> keys) {
         for (Menu key : keys) {
             if (!MenuType.DRINK.getFoodList().contains(key)) {
@@ -154,7 +138,23 @@ public class ChristmasController {
         throw new IllegalArgumentException("유효하지 않은 주문입니다. 다시 입력해 주세요.");
     }
 
+    public static void validateDuplicate(List<Menu> menuList) {
+        HashSet setMenu = new HashSet(menuList);
+        if (setMenu.size() != menuList.size()) {
+            throw new IllegalArgumentException();
+        }
+    }
 
+    public static void validateOrderFormat(String menuPrice) {
+        String regex = "([가-힣]+)-(\\d+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(menuPrice);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException();
+        }
+    }
 
 }
+
+
 
