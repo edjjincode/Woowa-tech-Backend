@@ -11,10 +11,6 @@ public class DateUtil {
         return dayOfWeek != Calendar.FRIDAY && dayOfWeek != Calendar.SATURDAY;
     }
 
-    public static boolean isWeekend(int visitDate) {
-        return !isWeekday(visitDate);
-    }
-
     public static boolean isSpecialEvent(int visitDate) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));

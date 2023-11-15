@@ -40,11 +40,9 @@ public class Calculator {
 
     public static int calculateWeekdayDiscount(int visitDate, Map<Menu, Integer> orderMap) {
         int discount = 0;
-
         for (Map.Entry<Menu, Integer> entry : orderMap.entrySet()) {
             Menu menu = entry.getKey();
             int quantity = entry.getValue();
-
             if (isDiscountApplicable(visitDate, menu)) {
                 discount += Discount.WEEKDAY_DISCOUNT.getValue() * quantity;
             }
