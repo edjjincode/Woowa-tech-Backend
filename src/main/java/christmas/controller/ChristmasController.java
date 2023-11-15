@@ -69,12 +69,7 @@ public class ChristmasController {
         String[] items = orderMenuPrice.split(",");
         try {
             for (String item : items) {
-                validateOrderFormat(item);
-                String[] parts = item.split("-");
-                Menu menu = getMenuByName(parts[0]);
-                menuOrderList.add(menu);
-                int quantity = Integer.parseInt(parts[1]);
-                user.addToOrder(menu, quantity);
+                addMenuQuantity(item, menuOrderList, user);
             }
             validateDuplicate(menuOrderList);
         } catch (IllegalArgumentException e) {
@@ -83,6 +78,15 @@ public class ChristmasController {
             getOrder(user);
         }
 
+    }
+
+    public static void addMenuQuantity(String item, List<Menu> menuOrderList, User user) {
+        validateOrderFormat(item);
+        String[] parts = item.split("-");
+        Menu menu = getMenuByName(parts[0]);
+        menuOrderList.add(menu);
+        int quantity = Integer.parseInt(parts[1]);
+        user.addToOrder(menu, quantity);
     }
 
     public static void validateDate(int visitDate){
