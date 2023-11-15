@@ -4,17 +4,16 @@ import java.util.Map;
 
 public class Calculator {
 
-    public static void calculateDiscount(User user) {
-        int totalOrderAmount = calculateTotalOrderAmount(user);
+    public static void calculateDiscount(int visitDate, Map<Menu, Integer> orderMap, Payment payment) {
+        int totalOrderAmount = calculateTotalOrderAmount(orderMap);
         if (checkRunGame(totalOrderAmount)) {
-            int totalDiscount = calculateAllDiscount(user);
-            setAll(totalDiscount, totalOrderAmount, user);
+            int totalDiscount = calculateAllDiscount(visitDate, orderMap);
+            setAll(totalDiscount, totalOrderAmount, payment);
         }
     }
 
-    public static int calculateTotalOrderAmount(User user) {
+    public static int calculateTotalOrderAmount(Map<Menu, Integer> orderMap) {
         int totalOrderAmount = 0;
-        Map<Menu, Integer> orderMap = user.getOrderMap();
         for (Map.Entry<Menu, Integer> entry : orderMap.entrySet()) {
             Menu menu = entry.getKey();
             int quantity = entry.getValue();
@@ -23,11 +22,11 @@ public class Calculator {
         return totalOrderAmount;
     }
 
-    public static int calculateAllDiscount(User user) {
+    public static int calculateAllDiscount(int visitDate, Map<Menu, Integer> orderMap) {
         int totalDiscount = 0;
-        totalDiscount += calculateChristmasDiscount(user.getVisitDate());
-        totalDiscount += calculateWeekdayDiscount(user.getVisitDate(), user.getOrderMap());
-        totalDiscount += calculateSpecialDiscount(user.getVisitDate());
+        totalDiscount += calculateChristmasDiscount(visitDate);
+        totalDiscount += calculateWeekdayDiscount(visitDate, orderMap);
+        totalDiscount += calculateSpecialDiscount(visitDate);
         return totalDiscount;
     }
 
@@ -59,14 +58,14 @@ public class Calculator {
         return discount;
     }
 
-    public static void setAll(int totalDiscount, int totalOrderAmount, User user) {
-        user.setTotalDiscount(totalDiscount);
-        user.setTotalOrderAmount(totalOrderAmount);
-        user.setFinalPayment(totalOrderAmount - totalDiscount);
-        if (!calculateChampagne(user)) {
-            user.setTotalBenefit(totalDiscount);
+    public static void setAll(int totalDiscount, int totalOrderAmount, Payment payment) {
+        payment.setTotalDiscount(totalDiscount);
+        payment.setTotalOrderAmount(totalOrderAmount);
+        payment.setFinalPayment(totalOrderAmount - totalDiscount);
+        if (!calculateChampagne(payment)) {
+            payment.setTotalBenefit(totalDiscount);
         }
-        user.setTotalBenefit(totalDiscount + Discount.CHAMPAGNE_DISCOUNT.getValue());
+        payment.setTotalBenefit(totalDiscount + Discount.CHAMPAGNE_DISCOUNT.getValue());
     }
 
     private static boolean isDiscountApplicable(int visitDate, Menu menu) {
@@ -80,7 +79,7 @@ public class Calculator {
     private static boolean checkRunGame(int totalOrderAmount) {
         return totalOrderAmount >= 10_000;
     }
-    public static boolean calculateChampagne(User user) {
-        return user.getTotalOrderAmount() >= 120_000;
+    public static boolean calculateChampagne(Payment payment) {
+        return payment.getTotalOrderAmount() >= 120_000;
     }
 }

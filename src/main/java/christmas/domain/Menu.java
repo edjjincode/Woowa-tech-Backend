@@ -1,4 +1,7 @@
 package christmas.domain;
+
+import java.util.List;
+
 public enum Menu {
     MUSHROOM_SOUP("양송이수프", 6_000),
     TAPAS("타파스", 5_500),
@@ -35,8 +38,6 @@ public enum Menu {
         }
         return false;
     }
-
-
 
 
 }
